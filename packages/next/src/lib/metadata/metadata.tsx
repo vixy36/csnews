@@ -24,13 +24,13 @@ export async function MetadataTree({
   pathname,
   searchParams,
   getDynamicParamFromSegment,
-  statusCode = 200,
+  statusCode,
 }: {
   tree: LoaderTree
   pathname: string
   searchParams: { [key: string]: any }
   getDynamicParamFromSegment: GetDynamicParamFromSegment
-  statusCode?: number
+  statusCode: number
 }) {
   const options = {
     pathname,

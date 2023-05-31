@@ -1293,18 +1293,20 @@ export async function renderToHTMLOrFlight(
           query
         )
 
-        const createMetadata = (tree: LoaderTree) => (
-          // Adding key={requestId} to make metadata remount for each render
-          // @ts-expect-error allow to use async server component
-          <MetadataTree
-            key={requestId}
-            tree={tree}
-            statusCode={res.statusCode}
-            pathname={pathname}
-            searchParams={providedSearchParams}
-            getDynamicParamFromSegment={getDynamicParamFromSegment}
-          />
-        )
+        const createMetadata = (tree: LoaderTree, statusCode: number) => {
+          return (
+            // Adding key={requestId} to make metadata remount for each render
+            // @ts-expect-error allow to use async server component
+            <MetadataTree
+              key={requestId}
+              tree={tree}
+              statusCode={statusCode}
+              pathname={pathname}
+              searchParams={providedSearchParams}
+              getDynamicParamFromSegment={getDynamicParamFromSegment}
+            />
+          )
+        }
 
         return (
           <>
@@ -1315,7 +1317,7 @@ export async function renderToHTMLOrFlight(
               initialTree={initialTree}
               initialHead={
                 <>
-                  {createMetadata(loaderTree)}
+                  {createMetadata(loaderTree, 200)}
                   {appUsingSizeAdjust ? <meta name="next-size-adjust" /> : null}
                 </>
               }
@@ -1323,7 +1325,7 @@ export async function renderToHTMLOrFlight(
               notFound={
                 NotFound && RootLayout ? (
                   <RootLayout params={{}}>
-                    {createMetadata(loaderTree)}
+                    {createMetadata(loaderTree, 404)}
                     {notFoundStyles}
                     <NotFound />
                   </RootLayout>
