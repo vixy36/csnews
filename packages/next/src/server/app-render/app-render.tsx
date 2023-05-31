@@ -75,7 +75,6 @@ import { warn } from '../../build/output/log'
 import { appendMutableCookies } from '../web/spec-extension/adapters/request-cookies'
 
 export const isEdgeRuntime = process.env.NEXT_RUNTIME === 'edge'
-
 const emptyLoaderTree: LoaderTree = ['', {}, {}]
 
 export type GetDynamicParamFromSegment = (
@@ -1172,6 +1171,7 @@ export async function renderToHTMLOrFlight(
                   <MetadataTree
                     key={requestId}
                     tree={loaderTree}
+                    statusCode={res.statusCode}
                     pathname={pathname}
                     searchParams={providedSearchParams}
                     getDynamicParamFromSegment={getDynamicParamFromSegment}
@@ -1299,6 +1299,7 @@ export async function renderToHTMLOrFlight(
           <MetadataTree
             key={requestId}
             tree={tree}
+            statusCode={res.statusCode}
             pathname={pathname}
             searchParams={providedSearchParams}
             getDynamicParamFromSegment={getDynamicParamFromSegment}
@@ -1322,7 +1323,7 @@ export async function renderToHTMLOrFlight(
               notFound={
                 NotFound && RootLayout ? (
                   <RootLayout params={{}}>
-                    {createMetadata(emptyLoaderTree)}
+                    {createMetadata(loaderTree)}
                     {notFoundStyles}
                     <NotFound />
                   </RootLayout>
@@ -1533,6 +1534,7 @@ export async function renderToHTMLOrFlight(
                   <MetadataTree
                     key={requestId}
                     tree={emptyLoaderTree}
+                    statusCode={res.statusCode}
                     pathname={pathname}
                     searchParams={providedSearchParams}
                     getDynamicParamFromSegment={getDynamicParamFromSegment}

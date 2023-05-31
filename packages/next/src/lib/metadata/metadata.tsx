@@ -24,22 +24,30 @@ export async function MetadataTree({
   pathname,
   searchParams,
   getDynamicParamFromSegment,
+  statusCode = 200,
 }: {
   tree: LoaderTree
   pathname: string
   searchParams: { [key: string]: any }
   getDynamicParamFromSegment: GetDynamicParamFromSegment
+  statusCode?: number
 }) {
   const options = {
     pathname,
   }
+
+  const errorType =
+    statusCode === 404 ? 'not-found' : statusCode > 400 ? 'error' : undefined
+
   const resolvedMetadata = await resolveMetadata({
     tree,
     parentParams: {},
     metadataItems: [],
     searchParams,
     getDynamicParamFromSegment,
+    errorType,
   })
+
   const metadata = await accumulateMetadata(resolvedMetadata, options)
 
   return (
